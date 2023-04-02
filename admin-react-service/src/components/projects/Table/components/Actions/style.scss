@@ -1,0 +1,12 @@
+.import-dropdown.chakra-button {
+  border: 1px solid rgba(25, 118, 210, 0.45);
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  min-width: 0;
+  padding: 7px;
+  margin-left: 1px;
+
+  .chakra-button__icon {
+    margin-inline-start: 0;
+  }
+}

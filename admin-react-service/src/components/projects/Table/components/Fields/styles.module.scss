@@ -1,0 +1,57 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.project-info-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.risks-wrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+.general-info-wrapper {
+  border-right: 2px solid rgba(128, 128, 128, 0.5);
+  margin-right: 40px;
+}
+
+.points-title {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.general-info {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 120px;
+}
+
+.main-field {
+  margin-right: 40px !important;
+
+  input:disabled {
+    color: rgba(0, 0, 0, 0.38);
+    cursor: default;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+.risk-field {
+  margin-right: 20px !important;
+
+  input:disabled {
+    color: rgba(0, 0, 0, 0.38);
+    cursor: default;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}

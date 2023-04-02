@@ -1,0 +1,56 @@
+server:
+  port: 8060
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+  client:
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8061/eureka/}
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    org.springframework.web: info
+    org.springframework.security: debug
+
+spring:
+  boot:
+    admin:
+      client:
+        url: ${ADMIN_SERVER:http://localhost:8090/}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER:http://localhost:8080/auth/}realms/master
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: auth-service
+        uri: lb://auth-service
+        predicates:
+        - Path=/auth/**,
+      - id: cost-estimation-service
+        uri: lb://cost-estimation-service
+        predicates:
+        - Path=/cost-project/**,
+        filters:
+        - TokenRelay=
+        - RemoveRequestHeader=Cookie

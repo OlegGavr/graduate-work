@@ -1,0 +1,15 @@
+.chakra-button {
+  height: 29px !important;
+  font-weight: 500 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.75 !important;
+  background-color: transparent !important;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  color: #1976d2;
+
+  &:hover {
+    background-color: rgba(25, 118, 210, 0.04) !important;
+  }
+}

@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: cost-estimation-service
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+  config:
+    import: optional:configserver:${CONFIG_SERVER:http://localhost:8088/}
+  data:
+    mongodb:
+      uri: mongodb://root:root@mongo1:27017,mongo2:27018,mongo3:27019/cost-estimation?authSource=admin
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: INFO
+    com:
+      haulmont:
+        projectplanning:
+          costestimation:
+            tool: DEBUG
+            importer:
+              excel:
+                ExcelCostImporter: TRACE
+                ExcelPlanImporter: TRACE
+            calc:
+              Calculation: TRACE
+              graph:
+                CachedGraph: TRACE
+pcs:
+  sharepoint:
+    client:
+      clientId: "0b13cfca-94c8-44cf-8e3d-bceac342e171"
+      clientSecret: "v6h8Q~PdzY1~fP.RbuaUdyJ5YNnkGosTOBc8zcYN"
+      authority: "https://login.microsoftonline.com/ae1a2507-178f-4b3b-bc55-08b2f867f682/"
+      scope: "https://graph.microsoft.com/.default"
+
+info:
+  app:
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"
+    encoding: "@project.build.sourceEncoding@"
+    java:
+      version: "@java.version@"

@@ -1,0 +1,29 @@
+plugins {
+    id "com.github.node-gradle.node" version "3.2.1"
+}
+
+configurations {
+    npm { transitive = false }
+}
+
+dependencies {
+    npm project(path: ':gateway-service:gateway-service-api:gateway-service-api-react-client', configuration: 'npm')
+}
+
+task npmInstallDeps(type: NpmTask, dependsOn: configurations.npm) {
+
+    args = ['install'] + configurations.npm.collect { it.path }
+
+}
+tasks.named('npmInstall') {
+    args = ['--ignore-scripts']
+}
+
+npmInstall.dependsOn npmInstallDeps
+npm_run_build.dependsOn
+
+task clean(type: Delete) { delete 'build' }
+
+// execute clean every time because npm tasks doesn't support incremental build
+task distribution(dependsOn: [clean, npmInstall, npm_run_build])
+

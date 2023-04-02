@@ -1,0 +1,45 @@
+.form {
+  .MuiPaper-root {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .RaEdit-noActions {
+    margin-top: 0 !important;
+  }
+}
+
+.name.MuiFormControl-root {
+  width: 570px;
+  margin-top: 0 !important;
+}
+
+.name {
+  .MuiInputBase-input {
+    padding-left: 0;
+  }
+
+  .MuiInputLabel-root {
+    transform: translate(0, 4px) scale(0.75);
+  }
+
+  .MuiFilledInput-root {
+    background: transparent;
+
+    &::before {
+      border-bottom-width: 0;
+    }
+  }
+
+  .MuiFormHelperText-root {
+    display: none;
+  }
+}
+
+.money.MuiFormControl-root {
+  width: 144px;
+}
+
+.money .MuiFormHelperText-root {
+  display: none;
+}

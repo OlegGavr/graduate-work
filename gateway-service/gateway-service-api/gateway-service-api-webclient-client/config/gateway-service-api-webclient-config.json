@@ -1,0 +1,13 @@
+{
+  "apiPackage": "com.haulmont.projectplanning.gateway.api.client",
+  "modelPackage": "com.haulmont.projectplanning.gateway.api.model",
+  "invokerPackage": "com.haulmont.projectplanning.gateway.api.invoker",
+  "configPackage": "com.haulmont.projectplanning.gateway.api.config",
+  "modelFilesConstrainedTo": ["Error"],
+  "useRuntimeException": true,
+  "library": "webclient",
+  "dateLibrary": "java8",
+  "java8": true,
+  "interfaceOnly": true,
+  "delegatePattern": true
+}

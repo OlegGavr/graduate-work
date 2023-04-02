@@ -1,0 +1,8 @@
+.git
+.gradle
+.idea
+**/Dockerfile
+**/*.dockerfile
+**/node_modules
+**/build
+**/README.md

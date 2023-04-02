@@ -1,0 +1,89 @@
+.project-list {
+  .reactgrid-content {
+    margin-top: 10px;
+  }
+
+  .rg-cell:not(.rg-chevron-header-cell, .rg-chevron-cell, .comment-cell, .comment-empty-field){
+    padding: 0 !important;
+  }
+
+  .rg-cell.rg-header-cell {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .rg-pane-center-middle {
+    z-index: 0;
+  }
+
+  .shadow-left {
+    box-shadow: 5px 0 3px -2px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-top {
+    box-shadow: -2px 2px 3px 1px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-bottom {
+    box-shadow: -2px -1px 3px 1px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-right {
+    box-shadow: -5px 0 3px -2px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-bottom-left-corner {
+    box-shadow: 2px -2px 3px 1px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-top-left-corner {
+    box-shadow: 2px 3px 3px 1px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .shadow-bottom-right-corner {
+    box-shadow: -2px -2px 3px 1px rgba(0, 0, 0, 0.17) !important;
+  }
+
+  .rg-context-menu {
+    visibility: hidden;
+  }
+}
+
+.shadow-cell-top {
+  .rg-header-cell, .rg-chevron-header-cell {
+    box-shadow: 0 5px 3px -1px rgb(0 0 0 / 17%);
+    z-index: 1;
+  }
+}
+
+.shadow-cell-bottom.rg-cell {
+  box-shadow: 0 -5px 3px -1px rgb(0 0 0 / 17%);
+}
+
+.RaLayout-content {
+  width: 100px;
+}
+
+.highlight-comment-cell.rg-cell {
+  background: #7595bc63;
+}
+
+.comment-empty-field.rg-cell {
+  overflow: visible !important;
+}
+
+.red-cell {
+  color: red;
+}
+
+.rg-cell-nonEditable {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.RaEdit-main > div, .RaShow-main > div {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

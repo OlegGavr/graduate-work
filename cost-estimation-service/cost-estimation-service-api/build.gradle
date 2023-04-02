@@ -1,0 +1,109 @@
+buildscript {
+    ext.projectGroup = 'com.haulmont.projectplanning'
+    ext.projectVersion = '1.0.0-SNAPSHOT'
+
+    ext.commonRepositories = {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    repositories commonRepositories
+
+    dependencies {
+        classpath group: 'org.openapitools', name: 'openapi-generator-gradle-plugin', version: '5.4.0'
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version:'2.6.4'
+        classpath group: 'io.spring.gradle', name:'dependency-management-plugin', version: '1.0.11.RELEASE'
+
+    }
+}
+
+def modulePrefix = ':cost-estimation-service:cost-estimation-service-api'
+
+
+def serverModule = project("${modulePrefix}:cost-estimation-service-api-server")
+
+def portalApiSpec = "${projectDir}/config/cost-estimation-service-api.yaml"
+
+ext {
+    set('springCloudVersion', "2021.0.1")
+}
+
+version = projectVersion
+
+configure([serverModule]) {
+    apply(plugin: 'java')
+    apply(plugin: 'org.openapi.generator')
+
+    repositories commonRepositories
+
+    group = projectGroup
+    version = projectVersion
+
+    configurations {
+        swaggerCodegen {
+            description = 'Swagger codegen sdk'
+        }
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        archiveClassifier = 'sources'
+    }
+
+    artifacts {
+        archives sourcesJar
+    }
+}
+
+configure(serverModule) {
+
+    apply(plugin: 'org.springframework.boot')
+    apply(plugin: 'io.spring.dependency-management')
+
+    def portalApiGeneratedSrcDir = "$buildDir/cost-estimation-service-api-server"
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["src/main/java",
+                           "${portalApiGeneratedSrcDir}/src/main/java"]
+            }
+        }
+    }
+
+    // copied from generated pom.xml
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter-web"
+        testImplementation "org.springframework.boot:spring-boot-starter-validation"
+        implementation "org.springframework.data:spring-data-commons"
+
+        implementation "org.springdoc:springdoc-openapi-ui:1.6.4"
+        implementation "com.google.code.findbugs:jsr305:3.0.2"
+        implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+        implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+        implementation "org.openapitools:jackson-databind-nullable:0.2.2"
+        implementation "com.fasterxml.jackson.core:jackson-databind"
+    }
+
+
+    task generateJavaServerSources(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+        doFirst {
+            delete(portalApiGeneratedSrcDir)
+        }
+
+        generatorName = "spring"
+        inputSpec = portalApiSpec
+        outputDir = portalApiGeneratedSrcDir
+        configFile = "${projectDir}/config/cost-estimation-service-api-server-config.json"
+        validateSpec = true
+//        verbose = true
+    }
+
+    compileJava.dependsOn generateJavaServerSources
+
+    task distribution(dependsOn: jar)
+}

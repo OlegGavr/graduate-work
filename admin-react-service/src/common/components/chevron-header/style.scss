@@ -1,0 +1,12 @@
+.collapsed .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.single-expanded {
+  flex-direction: row-reverse !important;
+  justify-content: space-between;
+}
+
+.no-child {
+  width: 0 !important;
+}

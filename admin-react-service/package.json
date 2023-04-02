@@ -1,0 +1,66 @@
+{
+  "name": "admin-react-service",
+  "workspaces": [
+    "src/libs/reactgrid"
+  ],
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.2",
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.0.1",
+    "@mui/material": "^5.0.2",
+    "@silevis/reactgrid": "./src/libs/reactgrid",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.27",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
+    "framer-motion": "^6.3.13",
+    "prop-types": "^15.8.1",
+    "react": "^18.0.0",
+    "react-admin": "^4.0.1",
+    "react-confirm-alert": "^3.0.6",
+    "react-dom": "^18.0.0",
+    "react-query": "^3.39.1",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1",
+    "react-top-loading-bar": "^2.3.1",
+    "sass": "^1.51.0",
+    "typescript": "^4.6.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .ts,.tsx,.jsx,.js src/",
+    "lint:fix": "eslint --fix --ext .ts,.tsx,.jsx,.js ."
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^7.32.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "^7.30.1",
+    "http-proxy-middleware": "^2.0.5"
+  }
+}

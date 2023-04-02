@@ -1,0 +1,228 @@
+services:
+  builder:
+    hostname: admin
+    image: project-planning_builder
+    build:
+      context: ./
+      dockerfile: deployment/builder/builder.dockerfile
+#      args:
+#        builder_image: project-planning_builder
+#        GRADLE_TASK: cost-estimation-service:cost-estimation-service-impl:distribution
+#        GRADLE_TASK: distribution -x :admin-react-service:npm_run_build
+
+  prometheus:
+    hostname: prometheus
+    image: project-planning_prometheus
+    build:
+      context: ./
+      dockerfile: deployment/prometheus/prometheus.dockerfile
+    ports:
+      - "9090:9090"
+    mem_limit: 512MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  admin:
+    hostname: admin
+    image: project-planning_admin
+    build:
+      context: ./admin-service/
+      args:
+        builder_image: project-planning_builder
+    ports:
+      - "8090:8090"
+    mem_limit: 512MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8090/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      builder:
+        condition: service_completed_successfully
+
+  config:
+    hostname: config
+    image: project-planning_config
+    build:
+      context: ./config-service/
+      args:
+        builder_image: project-planning_builder
+    environment:
+      - JAVA_OPTS=
+        -DADMIN_SERVER=http://admin:8090/
+    ports:
+      - "8088:8088"
+    mem_limit: 512MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8088/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      admin:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully
+
+  discovery:
+    hostname: discovery
+    image: project-planning_discovery
+    build:
+      context: ./discovery-service/
+      args:
+        builder_image: project-planning_builder
+    environment:
+      - JAVA_OPTS=
+        -DADMIN_SERVER=http://admin:8090/
+        -DCONFIG_SERVER=http://config:8088/
+    ports:
+      - "8061:8061"
+    mem_limit: 512MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8061/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      config:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully
+
+  gateway:
+    hostname: gateway
+    image: project-planning_gateway
+    build:
+      context: ./gateway-service/
+      args:
+        builder_image: project-planning_builder
+    environment:
+      - JAVA_OPTS=
+        -DADMIN_SERVER=http://admin:8090/
+        -DCONFIG_SERVER=http://config:8088/
+        -DEUREKA_SERVER=http://discovery:8061/eureka/
+        -DAUTH_SERVER=http://auth:8080/auth/
+    ports:
+      - "8060:8060"
+    mem_limit: 512MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8060/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      discovery:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully
+
+  auth:
+    hostname: auth
+    image: project-planning_auth
+    build:
+      context: ./auth-service/
+      args:
+        builder_image: project-planning_builder
+    environment:
+      - JAVA_OPTS=
+        -DADMIN_SERVER=http://admin:8090/
+        -DCONFIG_SERVER=http://config:8088/
+        -DEUREKA_SERVER=http://discovery:8061/eureka/
+    ports:
+      - "8080:8080"
+    mem_limit: 1024MB
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      discovery:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully
+
+  cost-estimation:
+    hostname: cost-estimation
+    image: project-planning_cost-estimation
+    build:
+      context: ./cost-estimation-service/
+      args:
+        builder_image: project-planning_builder
+    ports:
+      - 8091:8081
+#      - 5005:5005
+    environment:
+      - JAVA_OPTS=
+        -DADMIN_SERVER=http://admin:8090/
+        -DCONFIG_SERVER=http://config:8088/
+        -DEUREKA_SERVER=http://discovery:8061/eureka/
+        -DAUTH_SERVER=http://auth:8080/auth/
+    mem_limit: 4096MB
+    depends_on:
+      gateway:
+        condition: service_healthy
+      mongo-setup:
+        condition: service_started
+      builder:
+        condition: service_completed_successfully
+
+  mongo-setup:
+    image: project-planning_mongo-setup
+    build:
+      context: ./
+      dockerfile: deployment/mongo/mongo-setup.dockerfile
+    entrypoint: [ "/scripts/setup.sh" ] # Make sure this file exists (see below for the setup.sh)
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+
+  mongo1:
+    hostname: mongo1
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: always
+    command: [ "mongod", "--bind_ip_all", "--replSet", "rs0" ]
+
+  mongo2:
+    hostname: mongo2
+    image: mongo
+    ports:
+      - 27018:27017
+    restart: always
+    command: [ "mongod", "--bind_ip_all", "--replSet", "rs0" ]
+
+  mongo3:
+    hostname: mongo3
+    image: mongo
+    ports:
+      - 27019:27017
+    restart: always
+    command: [ "mongod", "--bind_ip_all", "--replSet", "rs0"]
+
+  admin-react:
+    hostname: admin-react
+    image: project-planning_admin-react
+    build:
+      context: ./admin-react-service/
+      args:
+        builder_image: project-planning_builder
+    environment:
+      - GATEWAY_SERVER=http://gateway:8060/
+      - READ_TIMEOUT=300
+    ports:
+      - "3000:80"
+    mem_limit: 512MB
+    depends_on:
+      gateway:
+        condition: service_healthy
+      builder:
+        condition: service_completed_successfully

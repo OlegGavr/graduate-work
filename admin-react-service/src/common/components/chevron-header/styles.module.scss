@@ -1,0 +1,12 @@
+.icon {
+  cursor: pointer;
+};
+
+.chevron-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+  transition: 200ms all ease-in-out;
+}

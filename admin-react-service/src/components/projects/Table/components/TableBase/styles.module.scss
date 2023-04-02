@@ -1,0 +1,16 @@
+.width-name {
+  position: absolute;
+  opacity: 0;
+  //line-height: 25px;
+  height: auto;
+  display: block;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.switch-button {
+  align-self: flex-end;
+}

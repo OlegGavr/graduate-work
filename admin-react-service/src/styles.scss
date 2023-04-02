@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: Times, sans-serif !important;
+  font-size: 16px !important;
+}
+
+.custom-admin-layout {
+  .RaSidebar-fixed {
+    background: white;
+  }
+
+  .RaMenu-open, .RaMenu-closed, .RaSidebar-fixed, .MuiDrawer-paper {
+    width: 100px !important;
+  }
+
+  .RaAppBar-menuButton {
+    display: none;
+  }
+
+  .RaAppBar-title {
+    margin-left: 20px;
+  }
+
+  .RaLayout-content {
+    padding-left: 16px !important;
+  }
+}

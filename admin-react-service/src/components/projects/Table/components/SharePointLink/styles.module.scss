@@ -1,0 +1,55 @@
+$link-color: #1976d2;
+
+.share-point-link {
+  display: flex;
+  align-items: center;
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .error {
+    padding: 5px 0;
+    background: var(--chakra-colors-white);
+    color: var(--chakra-colors-red-500);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  .input {
+    margin-top: 0;
+    margin-bottom: 0;
+
+    :global .MuiInputLabel-root {
+      transform: translate(0, 4px) scale(0.75);
+    }
+
+    :global .MuiInputBase-input {
+      padding-left: 0;
+    }
+
+    :global .MuiFormHelperText-root {
+      display: none;
+    }
+  }
+
+  .link {
+    color: $link-color;
+
+    &:hover {
+      color: darken($link-color, 10%);
+    }
+  }
+
+  .edit-button {
+    min-width: auto;
+    margin-left: 10px;
+
+    :global .MuiButton-startIcon {
+      margin: 0;
+    }
+  }
+}

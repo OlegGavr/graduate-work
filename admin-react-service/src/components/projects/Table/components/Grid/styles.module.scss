@@ -1,0 +1,12 @@
+.table-container {
+  overflow: scroll;
+
+  .rg-header-cell {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bolded-cell {
+    font-weight: bold;
+  }
+}

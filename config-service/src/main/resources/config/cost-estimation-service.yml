@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+spring:
+  boot:
+    admin:
+      client:
+        url: ${ADMIN_SERVER:http://localhost:8090/}
+  security:
+    oauth2:
+      resourceserver:
+        id: cost-estimation
+        jwt.issuer-uri: ${AUTH_SERVER:http://localhost:8080/auth/}realms/master
+  data:
+    mongodb:
+      uri: mongodb://root:root@mongo1:27017,mongo2:27017,mongo3:27017/cost-estimation?authSource=admin
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+  client:
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8061/eureka/}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+feign:
+  oauth2:
+    enabled: true
+
+pcs:
+  sharepoint:
+    client:
+      clientId: "0b13cfca-94c8-44cf-8e3d-bceac342e171"
+      clientSecret: "v6h8Q~PdzY1~fP.RbuaUdyJ5YNnkGosTOBc8zcYN"
+      authority: "https://login.microsoftonline.com/ae1a2507-178f-4b3b-bc55-08b2f867f682/"
+      scope: "https://graph.microsoft.com/.default"
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    feign: info
+    org.springframework.web: info
+    org.springframework.security: debug
+    org.springframework.data: debug
+    com.haulmont.projectplanning.costestimation: debug
